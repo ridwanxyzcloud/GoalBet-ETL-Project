@@ -1,25 +1,31 @@
-import yaml
 import os
-from etl_pipeline.extract import extract_data
-from etl_pipeline.transform import transform_data
-from etl_pipeline.load import load_data
+import sys
+
+# Adding the parent directory to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+
+from etl_modules.fetch import fetch_all_data
+from etl_modules.extract_transform import extract_and_transform_data
+from etl_modules.load import load_to_postgres
 
 def main():
-    with open('config/config.yaml', 'r') as file:
-        config = yaml.safe_load(file)
+    urls = [
+        "https://www.football-data.co.uk/mmz4281/1920/E0.csv",
+        "https://www.football-data.co.uk/mmz4281/1920/E2.csv",
+        "https://www.football-data.co.uk/mmz4281/1920/E1.csv"
+    ]
 
-    raw_data_path = config['staging_paths']['raw_data']
-    transformed_data_path = config['staging_paths']['transformed_data']
-    db_config = config['database']
+    staging_dir = "./staging_dir"
+    fetch_all_data(urls, staging_dir)
+    
+    columns = ['Div', 'Date', 'Time', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG']
+    output_path = './processed_data/transformed_data.csv'
+    
+    extract_and_transform_data(staging_dir, columns, output_path)
+    
+    table_name = 'GoalBet'
+    load_to_postgres(output_path,table_name)
 
-    os.makedirs(raw_data_path, exist_ok=True)
-    os.makedirs(transformed_data_path, exist_ok=True)
-
-    for source in config['data_sources']:
-        url = source['url']
-        raw_file_path = extract_data(url, raw_data_path)
-        transformed_file_path = transform_data(raw_file_path, transformed_data_path)
-        load_data(transformed_file_path, db_config)
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

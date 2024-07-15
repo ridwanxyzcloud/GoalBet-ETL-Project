@@ -1,5 +1,5 @@
-pandas
+pandas==2.0.3
 requests
-sqlalchemy
+sqlalchemy==1.4.52
 psycopg2-binary
-pyyaml
+python-dotenv

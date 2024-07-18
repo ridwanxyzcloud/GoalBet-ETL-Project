@@ -8,13 +8,16 @@ GoalBet is a sports data analytics company that builds predictive models based o
 
 ![GoalBet ETL Project Architecture](assets/goalbet_project.jpg)
 
+## Project Overview
+
+
 ## Setup Instructions
 
 1. **Clone the repository**:
     ```sh
-    git clone https://github.com/odetara/goalbet-etl-superstars.git
+    git clone https://github.com/ridwanxyz/goalbet-etl-pipeline.git
 
-    cd goalbet-etl-superstars
+    cd goalbet-etl-pipeline
     ```
 
 2. **Install dependencies**:
@@ -22,7 +25,7 @@ GoalBet is a sports data analytics company that builds predictive models based o
     pip install -r requirements.txt
     ```
 
-3. **Configure the database**: Update `config/config.yaml` with your database credentials and data source URLs.
+3. **Configure the database**: Update `.env` file with your database credentials and data source URLs.
 
 4. **Run the ETL pipeline**:
     ```sh

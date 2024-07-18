@@ -34,6 +34,5 @@ def extract_and_transform_data(staging_dir, columns, output_path):
     combined_df['Date'] = pd.to_datetime(combined_df['Date'], format='%d/%m/%Y')
     combined_df['Time'] = pd.to_datetime(combined_df['Time'], format='%H:%M', errors='coerce').dt.time
     
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
     combined_df.to_csv(output_path, index=False)
     print(f"{len(combined_df)} rows of transformed data saved to {output_path}")
